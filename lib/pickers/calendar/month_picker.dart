@@ -1,17 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import '../constants/constants.dart';
+import '../../constants/constants.dart';
 
-import '../widgets/observing_stateful_widget.dart';
+import '../../constants/observing_stateful_widget.dart';
 
-class DayPicker extends StatefulWidget {
+class MonthPicker extends StatefulWidget {
   @override
-  _DayPicker createState() => _DayPicker();
+  _MonthPicker createState() => _MonthPicker();
 }
 
-class _DayPicker extends ObservingStatefulWidget<DayPicker> {
-  int _dayCount = 31;
+class _MonthPicker extends ObservingStatefulWidget<MonthPicker> {
   FixedExtentScrollController _scrollController;
   // ignore: unused_field
   int _pickedValue;
@@ -23,8 +21,8 @@ class _DayPicker extends ObservingStatefulWidget<DayPicker> {
   Widget build(BuildContext context) {
     return Container(
       child: _listener(),
-      height: Constants.dayContainer.height,
-      width: Constants.dayContainer.width,
+      height: Constants.monthContainer.height,
+      width: Constants.monthContainer.width,
     );
   }
 
@@ -34,13 +32,20 @@ class _DayPicker extends ObservingStatefulWidget<DayPicker> {
     _scrollController = FixedExtentScrollController(initialItem: 0);
   }
 
-  List<Widget> _hours() {
+  List<Widget> _months() {
     List<Widget> result = List();
-    final numberFormat = NumberFormat('0');
-    for (int i = 1; i <= _dayCount; i++) {
-      final text = numberFormat.format(i);
-      result.add(Constants.text(text));
-    }
+    result.add(Constants.text('Jan'));
+    result.add(Constants.text('Feb'));
+    result.add(Constants.text('Mar'));
+    result.add(Constants.text('Apr'));
+    result.add(Constants.text('May'));
+    result.add(Constants.text('Jun'));
+    result.add(Constants.text('Jul'));
+    result.add(Constants.text('Aug'));
+    result.add(Constants.text('Sep'));
+    result.add(Constants.text('Oct'));
+    result.add(Constants.text('Nov'));
+    result.add(Constants.text('Dec'));
     return result;
   }
 
@@ -59,26 +64,25 @@ class _DayPicker extends ObservingStatefulWidget<DayPicker> {
 
   Widget _thePicker() {
     return CupertinoPicker.builder(
-      offAxisFraction: -0.2,
       scrollController: _scrollController,
       itemExtent: Constants.itemExtent,
       itemBuilder: (context, index) {
         int offset;
         if (index < 0) {
-          offset = (_dayCount - (index.abs() % _dayCount) % _dayCount);
-          if (offset == _dayCount) offset = 0;
+          offset = (12 - (index.abs() % 12) % 12);
+          if (offset == 12) offset = 0;
         } else {
-          offset = index % _dayCount;
+          offset = index % 12;
         }
-        return _hours()[offset];
+        return _months()[offset];
       },
       onSelectedItemChanged: (index) {
         int offset;
         if (index < 0) {
-          offset = (_dayCount - (index.abs() % _dayCount) % _dayCount);
-          if (offset == _dayCount) offset = 0;
+          offset = (12 - (index.abs() % 12) % 12);
+          if (offset == 12) offset = 0;
         } else {
-          offset = index % _dayCount;
+          offset = index % 12;
         }
         _pickedValue = index;
       },

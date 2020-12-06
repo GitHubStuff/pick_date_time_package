@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pick_date_time_package/constants/constants.dart';
 
-class SegmentControl extends StatelessWidget {
+class SegmentWidget extends StatelessWidget {
   final segmentedControlValue;
-  const SegmentControl({Key key, @required this.segmentedControlValue}) : super(key: key);
+  const SegmentWidget({Key key, @required this.segmentedControlValue}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(

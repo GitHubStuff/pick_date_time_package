@@ -4,8 +4,8 @@ import 'package:pick_date_time_package/constants/constants.dart';
 const fontSize = 20.0;
 const textStyle = TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold);
 
-class HeaderControl extends StatelessWidget {
-  const HeaderControl({Key key}) : super(key: key);
+class HeaderWidget extends StatelessWidget {
+  const HeaderWidget({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(

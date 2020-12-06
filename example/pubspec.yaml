@@ -12,6 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.0
+  flutter_modular: ^2.0.1
   pick_date_time_package:
     path: ../
 
