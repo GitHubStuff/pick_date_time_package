@@ -28,9 +28,11 @@ class HeaderBloc extends Bloc<HeaderEvent, HeaderState> {
         final minute = (event as SetMinuteEvent).minute;
         _dateTimeUTC = _dateTimeUTC.setMinute(minute);
         break;
-        case HeaderEventType.SetSecondEvent:
+      case HeaderEventType.SetSecondEvent:
         final second = (event as SetSecondEvent).second;
         _dateTimeUTC = _dateTimeUTC.setSecond(second);
+        break;
+      case HeaderEventType.SetHourEvent:
         break;
     }
     Log.T('after:  $_dateTimeUTC');

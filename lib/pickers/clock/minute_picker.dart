@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:pick_date_time_package/bloc/header/header_bloc.dart';
 import 'package:theme_package/theme_package.dart';
 import '../../constants/constants.dart';
 
@@ -10,8 +12,6 @@ class MinutePicker extends StatefulWidget {
 }
 
 class _MinutePicker extends ObservingStatefulWidget<MinutePicker> {
-  FixedExtentScrollController _scrollController;
-  // ignore: unused_field
   int _pickedValue;
 
   @override
@@ -29,7 +29,6 @@ class _MinutePicker extends ObservingStatefulWidget<MinutePicker> {
   @override
   void initState() {
     super.initState();
-    _scrollController = FixedExtentScrollController(initialItem: 0);
   }
 
   List<Widget> _hours() {
@@ -43,22 +42,34 @@ class _MinutePicker extends ObservingStatefulWidget<MinutePicker> {
   }
 
   Widget _listener() {
-    return NotificationListener<ScrollNotification>(
-        onNotification: (scrollNotification) {
-          if (scrollNotification is ScrollEndNotification) {
-            //Will only update when user has stopped scrolling in picker.
-            return true;
-          } else {
-            return false;
-          }
-        },
-        child: _thePicker());
+    int startingMinute = 0;
+    return BlocBuilder<HeaderBloc, HeaderState>(builder: (context, state) {
+      switch (state.headerBuildState) {
+        case HeaderBuildState.AdjustedDateTime:
+          startingMinute = (state as AdjustedDateTime).adjustedDateTime.minute;
+          break;
+        case HeaderBuildState.HeaderInitial:
+          startingMinute = (state as HeaderInitial).initialDateTime.minute;
+          break;
+      }
+      return NotificationListener<ScrollNotification>(
+          onNotification: (scrollNotification) {
+            if (scrollNotification is ScrollEndNotification) {
+              //Will only update when user has stopped scrolling in picker.
+              context.read<HeaderBloc>().add(SetMinuteEvent(_pickedValue));
+              return true;
+            } else {
+              return false;
+            }
+          },
+          child: _thePicker(startingMinute));
+    });
   }
 
-  Widget _thePicker() {
+  Widget _thePicker(int startingMinute) {
     return CupertinoPicker.builder(
       offAxisFraction: -0.25,
-      scrollController: _scrollController,
+      scrollController: FixedExtentScrollController(initialItem: startingMinute),
       itemExtent: Constants.itemExtent,
       itemBuilder: (context, index) {
         int offset;
@@ -78,7 +89,7 @@ class _MinutePicker extends ObservingStatefulWidget<MinutePicker> {
         } else {
           offset = index % 60;
         }
-        _pickedValue = index;
+        _pickedValue = offset;
       },
     );
   }

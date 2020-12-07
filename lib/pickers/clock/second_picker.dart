@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:pick_date_time_package/bloc/header/header_bloc.dart';
 import 'package:theme_package/theme_package.dart';
 import '../../constants/constants.dart';
 
@@ -10,7 +12,6 @@ class SecondPicker extends StatefulWidget {
 }
 
 class _SecondPicker extends ObservingStatefulWidget<SecondPicker> {
-  FixedExtentScrollController _scrollController;
   // ignore: unused_field
   int _pickedValue;
 
@@ -29,7 +30,6 @@ class _SecondPicker extends ObservingStatefulWidget<SecondPicker> {
   @override
   void initState() {
     super.initState();
-    _scrollController = FixedExtentScrollController(initialItem: 0);
   }
 
   List<Widget> _hours() {
@@ -43,22 +43,36 @@ class _SecondPicker extends ObservingStatefulWidget<SecondPicker> {
   }
 
   Widget _listener() {
-    return NotificationListener<ScrollNotification>(
-        onNotification: (scrollNotification) {
-          if (scrollNotification is ScrollEndNotification) {
-            //Will only update when user has stopped scrolling in picker.
-            return true;
-          } else {
-            return false;
-          }
-        },
-        child: _thePicker());
+    int startingRow = 0;
+    return BlocBuilder<HeaderBloc, HeaderState>(
+      builder: (context, state) {
+        switch (state.headerBuildState) {
+          case HeaderBuildState.AdjustedDateTime:
+            startingRow = (state as AdjustedDateTime).adjustedDateTime.second;
+            break;
+          case HeaderBuildState.HeaderInitial:
+            startingRow = (state as HeaderInitial).initialDateTime.second;
+            break;
+        }
+        return NotificationListener<ScrollNotification>(
+            onNotification: (scrollNotification) {
+              if (scrollNotification is ScrollEndNotification) {
+                context.read<HeaderBloc>().add(SetSecondEvent(_pickedValue));
+                //Will only update when user has stopped scrolling in picker.
+                return true;
+              } else {
+                return false;
+              }
+            },
+            child: _thePicker(startingRow));
+      },
+    );
   }
 
-  Widget _thePicker() {
+  Widget _thePicker(int startingSecond) {
     return CupertinoPicker.builder(
       offAxisFraction: 0.4,
-      scrollController: _scrollController,
+      scrollController: FixedExtentScrollController(initialItem: startingSecond),
       itemExtent: Constants.itemExtent,
       itemBuilder: (context, index) {
         int offset;
@@ -78,7 +92,7 @@ class _SecondPicker extends ObservingStatefulWidget<SecondPicker> {
         } else {
           offset = index % 60;
         }
-        _pickedValue = index;
+        _pickedValue = offset;
       },
     );
   }

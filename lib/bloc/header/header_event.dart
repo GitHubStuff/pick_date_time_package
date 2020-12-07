@@ -4,6 +4,7 @@ enum HeaderEventType {
   SetMeridianEvent,
   SetMinuteEvent,
   SetSecondEvent,
+  SetHourEvent,
 }
 
 abstract class HeaderEvent extends Equatable {

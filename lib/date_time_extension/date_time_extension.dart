@@ -30,6 +30,8 @@ extension DateTimeAdjustment on DateTime {
 
   Meridian get meridian => (this.hour < 12) ? Meridian.AM : Meridian.PM;
 
+  DateTime setAs24Hour(int hour) => setHour((meridian == Meridian.AM) ? (hour % 12) : (hour % 24)).trimmedUTCTime;
+
   DateTime setYear(int year) {
     DateTime result = this._adjust(year: year);
     if (result.day != this.day) {
@@ -48,7 +50,7 @@ extension DateTimeAdjustment on DateTime {
   }
 
   DateTime setDay(int day) => this._adjust(day: day);
-  DateTime setHour(int hour) => this._adjust(hour: hour);
+  DateTime setHour(int hour) => this._adjust(hour: hour).trimmedUTCTime;
   DateTime setMinute(int minute) => this._adjust(minute: minute).trimmedUTCTime;
   DateTime setSecond(int second) => this._adjust(second: second).trimmedUTCTime;
 

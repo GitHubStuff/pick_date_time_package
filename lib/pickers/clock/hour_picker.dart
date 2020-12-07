@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pick_date_time_package/bloc/header/header_bloc.dart';
 import 'package:theme_package/theme_package.dart';
 import '../../constants/constants.dart';
 
@@ -9,8 +11,6 @@ class HourPicker extends StatefulWidget {
 }
 
 class _HourPicker extends ObservingStatefulWidget<HourPicker> {
-  FixedExtentScrollController _scrollController;
-  // ignore: unused_field
   int _pickedValue;
 
   @override
@@ -28,7 +28,6 @@ class _HourPicker extends ObservingStatefulWidget<HourPicker> {
   @override
   void initState() {
     super.initState();
-    _scrollController = FixedExtentScrollController(initialItem: 0);
   }
 
   List<Widget> _hours() {
@@ -49,22 +48,38 @@ class _HourPicker extends ObservingStatefulWidget<HourPicker> {
   }
 
   Widget _listener() {
-    return NotificationListener<ScrollNotification>(
-        onNotification: (scrollNotification) {
-          if (scrollNotification is ScrollEndNotification) {
-            //Will only update when user has stopped scrolling in picker.
-            return true;
-          } else {
-            return false;
-          }
-        },
-        child: _thePicker());
+    int startingHour = 0;
+    return BlocBuilder<HeaderBloc, HeaderState>(
+      builder: (context, state) {
+        switch (state.headerBuildState) {
+          case HeaderBuildState.AdjustedDateTime:
+            startingHour = (state as AdjustedDateTime).adjustedDateTime.hour;
+            .... normalize hour
+            break;
+          case HeaderBuildState.HeaderInitial:
+            startingHour = (state as HeaderInitial).initialDateTime.hour;
+            break;
+        }
+        return NotificationListener<ScrollNotification>(
+            onNotification: (scrollNotification) {
+              if (scrollNotification is ScrollEndNotification) {
+                //Will only update when user has stopped scrolling in picker.
+                context.read<HeaderBloc>().add(SetHourEvent(_pickedValue));
+                return true;
+              } else {
+                return false;
+              }
+            },
+            child: _thePicker(startingHour));
+      },
+    );
   }
 
-  Widget _thePicker() {
+  Widget _thePicker(int startingHour) {
+    startingHour = (startingHour == 0) ? 11 : (startingHour % 12);
     return CupertinoPicker.builder(
       offAxisFraction: -0.4,
-      scrollController: _scrollController,
+      scrollController: FixedExtentScrollController(initialItem: startingHour),
       itemExtent: Constants.itemExtent,
       itemBuilder: (context, index) {
         int offset;
@@ -84,8 +99,7 @@ class _HourPicker extends ObservingStatefulWidget<HourPicker> {
         } else {
           offset = index % 12;
         }
-        _pickedValue = index;
-        Log.D('Hour: $index $offset');
+        _pickedValue = offset;
       },
     );
   }
