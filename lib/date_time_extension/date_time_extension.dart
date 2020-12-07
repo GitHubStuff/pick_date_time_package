@@ -1,9 +1,24 @@
+import 'package:intl/intl.dart';
+
 enum Meridian {
   AM,
   PM,
 }
 
 extension DateTimeAdjustment on DateTime {
+  String get calendarText => DateFormat('EEE, MMM d, yyyy').format(this.toLocal());
+
+  String get clockText => DateFormat('h:mm:ss a').format(this.toLocal());
+  DateTime get trimmedTime => DateTime.utc(
+        this.year,
+        this.month,
+        this.day,
+        this.hour,
+        this.minute,
+        this.second,
+        0,
+        0,
+      );
   DateTime _adjust({int year, int month, int day, int hour, int minute, int second}) {
     return DateTime(
       year ?? this.year,

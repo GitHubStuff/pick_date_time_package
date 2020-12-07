@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../../constants/constants.dart';
 
 import '../../constants/observing_stateful_widget.dart';
@@ -34,18 +35,11 @@ class _MonthPicker extends ObservingStatefulWidget<MonthPicker> {
 
   List<Widget> _months() {
     List<Widget> result = List();
-    result.add(Constants.text('Jan'));
-    result.add(Constants.text('Feb'));
-    result.add(Constants.text('Mar'));
-    result.add(Constants.text('Apr'));
-    result.add(Constants.text('May'));
-    result.add(Constants.text('Jun'));
-    result.add(Constants.text('Jul'));
-    result.add(Constants.text('Aug'));
-    result.add(Constants.text('Sep'));
-    result.add(Constants.text('Oct'));
-    result.add(Constants.text('Nov'));
-    result.add(Constants.text('Dec'));
+    for (int month = DateTime.january; month <= DateTime.december; month++) {
+      final dateTime = DateTime(2000, month);
+      final monthName = DateFormat('MMM').format(dateTime);
+      result.add(Constants.text('$monthName'));
+    }
     return result;
   }
 
