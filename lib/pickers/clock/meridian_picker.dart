@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../constants/observing_stateful_widget.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pick_date_time_package/bloc/header/header_bloc.dart';
+import 'package:theme_package/theme_package.dart';
 import '../../constants/constants.dart';
+import '../../date_time_extension/date_time_extension.dart';
 
 class MeridianPicker extends StatefulWidget {
   @override
@@ -9,12 +12,9 @@ class MeridianPicker extends StatefulWidget {
 }
 
 class _MeridianPicker extends ObservingStatefulWidget<MeridianPicker> {
-  FixedExtentScrollController _scrollController;
-
   @override
   void initState() {
     super.initState();
-    _scrollController = FixedExtentScrollController();
   }
 
   @override
@@ -30,12 +30,29 @@ class _MeridianPicker extends ObservingStatefulWidget<MeridianPicker> {
   }
 
   Widget _picker() {
-    return CupertinoPicker(
-      offAxisFraction: 1.3,
-      children: [Constants.text('AM'), Constants.text('PM')],
-      scrollController: _scrollController,
-      itemExtent: Constants.itemExtent,
-      onSelectedItemChanged: (index) {},
+    return BlocBuilder<HeaderBloc, HeaderState>(
+      builder: (context, state) {
+        int initialRow;
+        switch (state.headerBuildState) {
+          case HeaderBuildState.AdjustedDateTime:
+            final meridian = (state as AdjustedDateTime).adjustedDateTime.meridian;
+            initialRow = (meridian == Meridian.AM ? 0 : 1);
+            break;
+          case HeaderBuildState.HeaderInitial:
+            final meridian = (state as HeaderInitial).initialDateTime.meridian;
+            initialRow = (meridian == Meridian.AM ? 0 : 1);
+            break;
+        }
+        return CupertinoPicker(
+          offAxisFraction: 1.3,
+          children: [Constants.text('AM'), Constants.text('PM')],
+          scrollController: FixedExtentScrollController(initialItem: initialRow),
+          itemExtent: Constants.itemExtent,
+          onSelectedItemChanged: (index) {
+            context.read<HeaderBloc>().add(SetMeridianEvent(index == 0 ? Meridian.AM : Meridian.PM));
+          },
+        );
+      },
     );
   }
 }

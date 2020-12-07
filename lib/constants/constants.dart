@@ -27,4 +27,13 @@ class Constants {
   static ColorsForTheme dateColor = ColorsForTheme(light: Color(0xffeee4e1), dark: Color(0xff115173));
   static ColorsForTheme timeColor = ColorsForTheme(light: Color(0xffe6beae), dark: Color(0xff053f5e));
   static ColorsForTheme textColor = ColorsForTheme(light: Colors.black87, dark: Colors.tealAccent);
+  static ColorsForTheme headerColor = ColorsForTheme(light: Colors.red, dark: Color(0xff003434));
+
+  static Image get setterImage => Image(
+        image: AssetImage(
+          'images/setter.png',
+          package: 'pick_date_time_package',
+        ),
+        key: Key('setIcon'),
+      );
 }

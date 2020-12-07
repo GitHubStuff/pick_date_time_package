@@ -1,8 +1,15 @@
 part of 'header_bloc.dart';
 
+enum HeaderEventType {
+  SetMeridianEvent,
+  SetMinuteEvent,
+  SetSecondEvent,
+}
+
 abstract class HeaderEvent extends Equatable {
-  const HeaderEvent();
+  final HeaderEventType headerEventType;
+  const HeaderEvent(this.headerEventType);
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [headerEventType];
 }

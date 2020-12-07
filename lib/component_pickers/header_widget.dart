@@ -6,7 +6,11 @@ import '../constants/constants.dart';
 import '../date_time_extension/date_time_extension.dart';
 
 const fontSize = 20.0;
-const textStyle = TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold);
+const textStyle = TextStyle(
+  fontSize: fontSize,
+  fontWeight: FontWeight.bold,
+  color: Colors.tealAccent,
+);
 
 class HeaderWidget extends StatelessWidget {
   const HeaderWidget({Key key}) : super(key: key);
@@ -15,16 +19,27 @@ class HeaderWidget extends StatelessWidget {
     return Container(
       height: Constants.itemExtent * 1.30,
       width: Constants.containerWidth,
-      color: Colors.amber,
+      color: Constants.headerColor.of(brightness: Brightness.dark),
       child: _row(),
     );
   }
 
   Widget _button() {
     return IconButton(
-      icon: Icon(Icons.volume_up),
-      tooltip: 'Increase volume by 10',
+      icon: _icon(),
+      tooltip: 'Accept Date/Time',
       onPressed: () {},
+    );
+  }
+
+  Widget _icon() {
+    return Container(
+      height: 36,
+      width: 36,
+      child: AspectRatio(
+        aspectRatio: 1,
+        child: Constants.setterImage,
+      ),
     );
   }
 

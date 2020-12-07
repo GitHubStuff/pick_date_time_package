@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../constants/observing_stateful_widget.dart';
+import 'package:theme_package/theme_package.dart';
 import '../../constants/constants.dart';
 
 class HourPicker extends StatefulWidget {
@@ -85,6 +85,7 @@ class _HourPicker extends ObservingStatefulWidget<HourPicker> {
           offset = index % 12;
         }
         _pickedValue = index;
+        Log.D('Hour: $index $offset');
       },
     );
   }
