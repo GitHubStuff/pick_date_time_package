@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:pick_date_time_package/constants/constants.dart';
-import 'package:pick_date_time_package/pickers/clock_seperator.dart';
-import '../pickers/meridian_picker.dart';
-import '../pickers/hour_picker.dart';
-import '../pickers/minute_picker.dart';
-import '../pickers/second_picker.dart';
+import '../constants/constants.dart';
+import '../pickers/clock/clock_seperator.dart';
+import '../pickers/clock/meridian_picker.dart';
+import '../pickers/clock/hour_picker.dart';
+import '../pickers/clock/minute_picker.dart';
+import '../pickers/clock/second_picker.dart';
 
+/// Holds [HourPicker] [ClockSeperator] [MinutePicker] [ClockSeperator] [MeridianPicker] in a container
 class ClockPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final color = Constants.timeColor.of(brightness: Brightness.dark);
     return Container(
+      color: color,
       height: Constants.clockContainer.height,
       width: Constants.clockContainer.width,
       child: Row(

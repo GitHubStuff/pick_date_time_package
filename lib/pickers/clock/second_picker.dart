@@ -1,15 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../constants/constants.dart';
+import 'package:intl/intl.dart';
+import '../../constants/observing_stateful_widget.dart';
+import '../../constants/constants.dart';
 
-import '../widgets/observing_stateful_widget.dart';
-
-class MonthPicker extends StatefulWidget {
+class SecondPicker extends StatefulWidget {
   @override
-  _MonthPicker createState() => _MonthPicker();
+  _SecondPicker createState() => _SecondPicker();
 }
 
-class _MonthPicker extends ObservingStatefulWidget<MonthPicker> {
+class _SecondPicker extends ObservingStatefulWidget<SecondPicker> {
   FixedExtentScrollController _scrollController;
   // ignore: unused_field
   int _pickedValue;
@@ -21,8 +21,8 @@ class _MonthPicker extends ObservingStatefulWidget<MonthPicker> {
   Widget build(BuildContext context) {
     return Container(
       child: _listener(),
-      height: Constants.monthContainer.height,
-      width: Constants.monthContainer.width,
+      height: Constants.secondContainer.height,
+      width: Constants.secondContainer.width,
     );
   }
 
@@ -32,20 +32,13 @@ class _MonthPicker extends ObservingStatefulWidget<MonthPicker> {
     _scrollController = FixedExtentScrollController(initialItem: 0);
   }
 
-  List<Widget> _months() {
+  List<Widget> _hours() {
     List<Widget> result = List();
-    result.add(Constants.text('Jan'));
-    result.add(Constants.text('Feb'));
-    result.add(Constants.text('Mar'));
-    result.add(Constants.text('Apr'));
-    result.add(Constants.text('May'));
-    result.add(Constants.text('Jun'));
-    result.add(Constants.text('Jul'));
-    result.add(Constants.text('Aug'));
-    result.add(Constants.text('Sep'));
-    result.add(Constants.text('Oct'));
-    result.add(Constants.text('Nov'));
-    result.add(Constants.text('Dec'));
+    final numberFormat = NumberFormat('00');
+    for (int i = 0; i < 60; i++) {
+      final text = numberFormat.format(i);
+      result.add(Constants.text(text));
+    }
     return result;
   }
 
@@ -64,25 +57,26 @@ class _MonthPicker extends ObservingStatefulWidget<MonthPicker> {
 
   Widget _thePicker() {
     return CupertinoPicker.builder(
+      offAxisFraction: 0.4,
       scrollController: _scrollController,
       itemExtent: Constants.itemExtent,
       itemBuilder: (context, index) {
         int offset;
         if (index < 0) {
-          offset = (12 - (index.abs() % 12) % 12);
-          if (offset == 12) offset = 0;
+          offset = (60 - (index.abs() % 60) % 60);
+          if (offset == 60) offset = 0;
         } else {
-          offset = index % 12;
+          offset = index % 60;
         }
-        return _months()[offset];
+        return _hours()[offset];
       },
       onSelectedItemChanged: (index) {
         int offset;
         if (index < 0) {
-          offset = (12 - (index.abs() % 12) % 12);
-          if (offset == 12) offset = 0;
+          offset = (60 - (index.abs() % 60) % 60);
+          if (offset == 60) offset = 0;
         } else {
-          offset = index % 12;
+          offset = index % 60;
         }
         _pickedValue = index;
       },

@@ -1,16 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import '../constants/constants.dart';
+import '../../constants/observing_stateful_widget.dart';
+import '../../constants/constants.dart';
 
-import '../widgets/observing_stateful_widget.dart';
-
-class SecondPicker extends StatefulWidget {
+class HourPicker extends StatefulWidget {
   @override
-  _SecondPicker createState() => _SecondPicker();
+  _HourPicker createState() => _HourPicker();
 }
 
-class _SecondPicker extends ObservingStatefulWidget<SecondPicker> {
+class _HourPicker extends ObservingStatefulWidget<HourPicker> {
   FixedExtentScrollController _scrollController;
   // ignore: unused_field
   int _pickedValue;
@@ -22,8 +20,8 @@ class _SecondPicker extends ObservingStatefulWidget<SecondPicker> {
   Widget build(BuildContext context) {
     return Container(
       child: _listener(),
-      height: Constants.secondContainer.height,
-      width: Constants.secondContainer.width,
+      height: Constants.hourContainer.height,
+      width: Constants.hourContainer.width,
     );
   }
 
@@ -35,11 +33,18 @@ class _SecondPicker extends ObservingStatefulWidget<SecondPicker> {
 
   List<Widget> _hours() {
     List<Widget> result = List();
-    final numberFormat = NumberFormat('00');
-    for (int i = 0; i < 60; i++) {
-      final text = numberFormat.format(i);
-      result.add(Constants.text(text));
-    }
+    result.add(Constants.text(' 1'));
+    result.add(Constants.text(' 2'));
+    result.add(Constants.text(' 3'));
+    result.add(Constants.text(' 4'));
+    result.add(Constants.text(' 5'));
+    result.add(Constants.text(' 6'));
+    result.add(Constants.text(' 7'));
+    result.add(Constants.text(' 8'));
+    result.add(Constants.text(' 9'));
+    result.add(Constants.text('10'));
+    result.add(Constants.text('11'));
+    result.add(Constants.text('12'));
     return result;
   }
 
@@ -58,26 +63,26 @@ class _SecondPicker extends ObservingStatefulWidget<SecondPicker> {
 
   Widget _thePicker() {
     return CupertinoPicker.builder(
-      offAxisFraction: 0.4,
+      offAxisFraction: -0.4,
       scrollController: _scrollController,
       itemExtent: Constants.itemExtent,
       itemBuilder: (context, index) {
         int offset;
         if (index < 0) {
-          offset = (60 - (index.abs() % 60) % 60);
-          if (offset == 60) offset = 0;
+          offset = (12 - (index.abs() % 12) % 12);
+          if (offset == 12) offset = 0;
         } else {
-          offset = index % 60;
+          offset = index % 12;
         }
         return _hours()[offset];
       },
       onSelectedItemChanged: (index) {
         int offset;
         if (index < 0) {
-          offset = (60 - (index.abs() % 60) % 60);
-          if (offset == 60) offset = 0;
+          offset = (12 - (index.abs() % 12) % 12);
+          if (offset == 12) offset = 0;
         } else {
-          offset = index % 60;
+          offset = index % 12;
         }
         _pickedValue = index;
       },

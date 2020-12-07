@@ -1,16 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../constants/constants.dart';
+import '../../constants/constants.dart';
 
-import '../widgets/observing_stateful_widget.dart';
+import '../../constants/observing_stateful_widget.dart';
 
-class MinutePicker extends StatefulWidget {
+class MonthPicker extends StatefulWidget {
   @override
-  _MinutePicker createState() => _MinutePicker();
+  _MonthPicker createState() => _MonthPicker();
 }
 
-class _MinutePicker extends ObservingStatefulWidget<MinutePicker> {
+class _MonthPicker extends ObservingStatefulWidget<MonthPicker> {
   FixedExtentScrollController _scrollController;
   // ignore: unused_field
   int _pickedValue;
@@ -22,8 +22,8 @@ class _MinutePicker extends ObservingStatefulWidget<MinutePicker> {
   Widget build(BuildContext context) {
     return Container(
       child: _listener(),
-      height: Constants.minuteContainer.height,
-      width: Constants.minuteContainer.width,
+      height: Constants.monthContainer.height,
+      width: Constants.monthContainer.width,
     );
   }
 
@@ -33,12 +33,12 @@ class _MinutePicker extends ObservingStatefulWidget<MinutePicker> {
     _scrollController = FixedExtentScrollController(initialItem: 0);
   }
 
-  List<Widget> _hours() {
+  List<Widget> _months() {
     List<Widget> result = List();
-    final numberFormat = NumberFormat('00');
-    for (int i = 0; i < 60; i++) {
-      final text = numberFormat.format(i);
-      result.add(Constants.text(text));
+    for (int month = DateTime.january; month <= DateTime.december; month++) {
+      final dateTime = DateTime(2000, month);
+      final monthName = DateFormat('MMM').format(dateTime);
+      result.add(Constants.text('$monthName'));
     }
     return result;
   }
@@ -58,26 +58,25 @@ class _MinutePicker extends ObservingStatefulWidget<MinutePicker> {
 
   Widget _thePicker() {
     return CupertinoPicker.builder(
-      offAxisFraction: -0.25,
       scrollController: _scrollController,
       itemExtent: Constants.itemExtent,
       itemBuilder: (context, index) {
         int offset;
         if (index < 0) {
-          offset = (60 - (index.abs() % 60) % 60);
-          if (offset == 60) offset = 0;
+          offset = (12 - (index.abs() % 12) % 12);
+          if (offset == 12) offset = 0;
         } else {
-          offset = index % 60;
+          offset = index % 12;
         }
-        return _hours()[offset];
+        return _months()[offset];
       },
       onSelectedItemChanged: (index) {
         int offset;
         if (index < 0) {
-          offset = (60 - (index.abs() % 60) % 60);
-          if (offset == 60) offset = 0;
+          offset = (12 - (index.abs() % 12) % 12);
+          if (offset == 12) offset = 0;
         } else {
-          offset = index % 60;
+          offset = index % 12;
         }
         _pickedValue = index;
       },
