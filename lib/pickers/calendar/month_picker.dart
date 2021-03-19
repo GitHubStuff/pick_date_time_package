@@ -16,7 +16,7 @@ class _MonthPicker extends ObservingStatefulWidget<MonthPicker> {
   int _pickedValue;
 
   @override
-  void afterFirstLayout(BuildContext context) {}
+  void afterFirstLayoutComplete(BuildContext context) {}
 
   @override
   Widget build(BuildContext context) {

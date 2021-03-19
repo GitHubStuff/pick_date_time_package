@@ -14,7 +14,7 @@ class _HourPicker extends ObservingStatefulWidget<HourPicker> {
   int _pickedValue;
 
   @override
-  void afterFirstLayout(BuildContext context) {}
+  void afterFirstLayoutComplete(BuildContext context) {}
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +54,7 @@ class _HourPicker extends ObservingStatefulWidget<HourPicker> {
         switch (state.headerBuildState) {
           case HeaderBuildState.AdjustedDateTime:
             startingHour = (state as AdjustedDateTime).adjustedDateTime.hour;
-            .... normalize hour
+            //TODO:.... normalize hour
             break;
           case HeaderBuildState.HeaderInitial:
             startingHour = (state as HeaderInitial).initialDateTime.hour;

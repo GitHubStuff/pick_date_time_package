@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:theme_package/theme_package.dart';
 import '../../constants/constants.dart';
 
-
 class DayPicker extends StatefulWidget {
   @override
   _DayPicker createState() => _DayPicker();
@@ -17,7 +16,7 @@ class _DayPicker extends ObservingStatefulWidget<DayPicker> {
   int _pickedValue;
 
   @override
-  void afterFirstLayout(BuildContext context) {}
+  void afterFirstLayoutComplete(BuildContext context) {}
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +33,7 @@ class _DayPicker extends ObservingStatefulWidget<DayPicker> {
     _scrollController = FixedExtentScrollController(initialItem: 0);
   }
 
-  List<Widget> _hours() {
+  List<Widget> _days() {
     List<Widget> result = List();
     final numberFormat = NumberFormat('0');
     for (int i = 1; i <= _dayCount; i++) {
@@ -70,7 +69,7 @@ class _DayPicker extends ObservingStatefulWidget<DayPicker> {
         } else {
           offset = index % _dayCount;
         }
-        return _hours()[offset];
+        return _days()[offset];
       },
       onSelectedItemChanged: (index) {
         int offset;

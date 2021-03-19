@@ -1,21 +1,20 @@
 name: pick_date_time_package
 description: A new Flutter package project.
 version: 0.0.1
-author:
+author: null
 #homepage:
-
 environment:
-  sdk: ">=2.10.0 <3.0.0"
-  flutter: ">=1.22.0"
+  sdk: ">=2.10.4 <3.0.0"
+  flutter: ">=1.22.5"
 
 dependencies:
   flutter:
     sdk: flutter
+  theme_package:
+    path: ../theme_package
   equatable: ^1.2.5
   flutter_bloc: ^6.1.1
   intl: ^0.16.1
-  theme_package:
-    path: ../theme_package
 
 dev_dependencies:
   flutter_test:

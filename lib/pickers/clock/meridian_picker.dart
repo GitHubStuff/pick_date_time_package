@@ -18,7 +18,7 @@ class _MeridianPicker extends ObservingStatefulWidget<MeridianPicker> {
   }
 
   @override
-  void afterFirstLayout(BuildContext context) {}
+  void afterFirstLayoutComplete(BuildContext context) {}
 
   @override
   Widget build(BuildContext context) {

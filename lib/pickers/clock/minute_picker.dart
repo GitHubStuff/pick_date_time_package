@@ -15,7 +15,7 @@ class _MinutePicker extends ObservingStatefulWidget<MinutePicker> {
   int _pickedValue;
 
   @override
-  void afterFirstLayout(BuildContext context) {}
+  void afterFirstLayoutComplete(BuildContext context) {}
 
   @override
   Widget build(BuildContext context) {

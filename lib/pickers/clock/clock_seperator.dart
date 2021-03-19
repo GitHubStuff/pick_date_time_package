@@ -18,7 +18,7 @@ class _ClockSeperator extends ObservingStatefulWidget<ClockSeperator> {
   }
 
   @override
-  void afterFirstLayout(BuildContext context) {}
+  void afterFirstLayoutComplete(BuildContext context) {}
 
   @override
   Widget build(BuildContext context) {

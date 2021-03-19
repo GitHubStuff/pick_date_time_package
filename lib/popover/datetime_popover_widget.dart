@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+// Copyright 2021 LTMM. All rights reserved.
+// Uses of this source code is governed by 'The Unlicense' that can be
+// found in the LICENSE file.
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pick_date_time_package/date_time_extension/picker_datetime.dart';
 import 'package:theme_package/theme_package.dart';

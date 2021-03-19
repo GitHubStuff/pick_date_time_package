@@ -16,7 +16,7 @@ class _SecondPicker extends ObservingStatefulWidget<SecondPicker> {
   int _pickedValue;
 
   @override
-  void afterFirstLayout(BuildContext context) {}
+  void afterFirstLayoutComplete(BuildContext context) {}
 
   @override
   Widget build(BuildContext context) {
